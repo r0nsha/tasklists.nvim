@@ -1,9 +1,11 @@
-- [ ] ensure markdown parser is installed
-- [ ] only enable if the current treesitter parser is `markdown`
-- [ ] build tree of tasks on bufwritepost, bufread, bufnew (if filetype is `markdown`)
+- [x] ensure markdown parser is installed
+- [x] only enable if the current treesitter parser is `markdown`
+- [x] api/command to open log buffer in a new tab
+- [ ] build tree of tasks
 - [ ] toggle statuses
   - [ ] `incomplete`
   - [ ] `complete`
+- [ ] update tree on BufWritePost
 - [ ] affect parents
 - [ ] affect children
 - [ ] dot repeat
@@ -27,6 +29,7 @@
     - [ ] `Tasklists toggle status`
     - [ ] `Tasklists cycle next/previous`
   - [ ] create new tasks on newline
+  - [ ] support ordered lists
   - [ ] create new tasks on `o` and `O`
   - [ ] support visual selection
   - [ ] dot repeat
