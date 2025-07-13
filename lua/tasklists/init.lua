@@ -1,3 +1,4 @@
+local Tree = require("tasklists.tree")
 local log = require("tasklists.log")
 local ts = vim.treesitter
 
@@ -5,17 +6,28 @@ local group = vim.api.nvim_create_augroup("tasklists.nvim", { clear = true })
 
 local M = {}
 
-local query = ts.query.parse(
-  "markdown",
-  [[
-    (list_item (paragraph) @paragraph) @item
-    (list_marker_minus) @marker
-    (list_marker_plus) @marker  
-    (list_marker_star) @marker
-    (list_marker_dot) @marker.ordered
-    (list_marker_parenthesis) @marker.ordered
-  ]]
-)
+---@param buf number
+---@return TSNode?
+local function parse_buf(buf)
+  local lang = ts.language.get_lang(vim.bo[buf].filetype)
+  if lang ~= "markdown" then
+    return
+  end
+
+  local parser = ts.get_parser(buf, lang)
+  if not parser then
+    log.error("No parser available for markdown")
+    return
+  end
+
+  local _tree = parser:parse()[1]
+  if not _tree then
+    log.error("Failed to parser buffer")
+    return
+  end
+
+  return _tree:root()
+end
 
 ---@param config? tasklists.Config
 function M.setup(config)
@@ -31,28 +43,12 @@ function M.setup(config)
     callback = function(args)
       local buf = args.buf
 
-      local lang = ts.language.get_lang(vim.bo[buf].filetype)
-      if lang ~= "markdown" then
+      local root = parse_buf(buf)
+      if not root then
         return
       end
 
-      local parser = ts.get_parser(buf, lang)
-      if not parser then
-        log.error("parser not found")
-      end
-
-      local tree = parser:parse()[1]
-      local root = tree:root()
-
-      -- local results = {}
-
-      -- for id, node, metadata in q:iter_captures(root, buf, 0, -1) do
-      --   local name = q.captures[id]
-      --   local range = { ts.get_node_text(node, buf)[1], ts.get_node_range(node) }
-      --   table.insert(results, { type = name, node = node, range = range, metadata = metadata })
-      -- end
-
-      -- vim.notify(vim.inspect(results))
+      local tree = Tree:from_root(root, buf)
     end,
   })
 end
