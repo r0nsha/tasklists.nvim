@@ -1,0 +1,33 @@
+- [ ] ensure markdown parser is installed
+- [ ] only enable if the current treesitter parser is `markdown`
+- [ ] build tree of tasks on bufwritepost, bufread, bufnew (if filetype is `markdown`)
+- [ ] toggle statuses
+  - [ ] `incomplete`
+  - [ ] `complete`
+- [ ] affect parents
+- [ ] affect children
+- [ ] dot repeat
+- [ ] api
+  - [ ] toggle()
+  - [ ] toggle(status)
+- [ ] config
+  - [ ] how each status is displayed as a string
+  - [ ] how each status affects its parents & children ("none" | "parents" | "children" | "all")
+  - [ ] how each status affects its parents & children ("none" | "parents" | "children" | "all")
+- [ ] turn into plugin
+  - [ ] README
+  - [ ] vim help doc
+  - [ ] require `nvim-treesitter/nvim-treesitter`
+- [ ] additional issues
+  - [ ] support `in_progress` and `cancelled` statuses
+  - [ ] api: `cycle`
+    - [ ] `cycle("next/previous")` - `incomplete -> in_progress -> complete -> cancelled`
+  - [ ] create cmdline equalivants for `toggle` and `cycle`
+    - [ ] `Tasklists toggle`
+    - [ ] `Tasklists toggle status`
+    - [ ] `Tasklists cycle next/previous`
+  - [ ] create new tasks on newline
+  - [ ] create new tasks on `o` and `O`
+  - [ ] support visual selection
+  - [ ] dot repeat
+  - [ ] support `markdown_inline`
