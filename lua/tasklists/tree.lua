@@ -12,7 +12,9 @@ local Tree = {}
 local query = ts.query.parse(
   "markdown",
   [[
-    (list_item (paragraph) @paragraph) @item
+    (list_item 
+        (task_list_marker_checked) @checked
+        (paragraph) @paragraph) @item
     ; (list_marker_minus) @marker
     ; (list_marker_plus) @marker  
     ; (list_marker_star) @marker
@@ -24,15 +26,6 @@ local query = ts.query.parse(
 ---@param tree tasklists.Tree
 ---@param root TSNode
 local function build_from_root(tree, root)
-  -- local nodes = {
-  --   ---@type TSNode[]
-  --   items = {},
-  --   -- ---@type table<integer, TSNode[]>
-  --   -- item_markers = {},
-  --   -- ---@type table<integer, TSNode[]>
-  --   -- item_paragraphs = {},
-  -- }
-
   for id, node, _ in query:iter_captures(root, tree.buf, 0, -1) do
     local capture = query.captures[id]
 
@@ -41,6 +34,8 @@ local function build_from_root(tree, root)
       table.insert(tree.tasks, task)
       tree.id_to_task[id] = tree.id_to_task[id] or {}
       table.insert(tree.id_to_task[id], task)
+      local text = ts.get_node_text(node, tree.buf)
+      vim.notify(vim.inspect(text))
       -- elseif capture == "marker" then
       --   local parent = node:parent()
       --   if parent then
@@ -52,8 +47,8 @@ local function build_from_root(tree, root)
       --   local parent = node:parent()
       --   if parent then
       --     local parent_id = parent:id()
-      --     nodes.item_paragraphs[parent_id] = nodes.item_paragraphs[parent_id] or {}
-      --     table.insert(nodes.item_paragraphs[parent_id], node)
+      --     local text = ts.get_node_text(node, tree.buf)
+      --     vim.notify(vim.inspect(text))
       --   end
     end
   end

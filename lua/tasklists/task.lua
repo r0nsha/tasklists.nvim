@@ -1,7 +1,7 @@
----@enum tasklists.Status
+---@enum tasklists.State
 ---| '"incomplete"'
 ---| '"complete"'
-local Status = {
+local State = {
   incomplete = "incomplete",
   complete = "complete",
 }
@@ -16,7 +16,7 @@ local Status = {
 
 ---@class tasklists.Task
 ---@field node TSNode
----@field status tasklists.Status
+---@field status tasklists.State
 ---@field range tasklists.Range
 local Task = {}
 
@@ -27,7 +27,7 @@ function Task:new(node)
 
   local t = {
     node = node,
-    status = Status.incomplete,
+    status = State.incomplete,
     range = {
       start = { row = start_row, col = start_col },
       end_ = { row = end_row, col = end_col },
