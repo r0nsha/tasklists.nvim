@@ -48,7 +48,7 @@ function M.setup(config)
         return
       end
 
-      local tree = Tree:from_root(root, buf)
+      local tree = Tree:new(root, buf)
     end,
   })
 end
